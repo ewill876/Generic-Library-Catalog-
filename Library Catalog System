@@ -1,0 +1,116 @@
+import java.util.HashMap;
+import java.util.Map;
+
+// Generic Library Item class
+class LibraryItem<T> {
+    private String title;
+    private String author;
+    private int itemID;
+
+    public LibraryItem(String title, String author, int itemID) {
+        this.title = title;
+        this.author = author;
+        this.itemID = itemID;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public int getItemID() {
+        return itemID;
+    }
+
+    @Override
+    public String toString() {
+        return "Title: " + title + ", Author: " + author + ", Item ID: " + itemID;
+    }
+}
+
+// Generic Catalog class
+class Catalog<T extends LibraryItem<?>> {
+    private Map<Integer, T> items;
+
+    public Catalog() {
+        items = new HashMap<>();
+    }
+
+    public void addItem(int itemID, T item) {
+        items.put(itemID, item);
+    }
+
+    public void removeItem(int itemID) {
+        if (items.containsKey(itemID)) {
+            items.remove(itemID);
+            System.out.println("Item removed.");
+        } else {
+            System.out.println("Item with ID " + itemID + " does not exist.");
+        }
+    }
+
+    public void getItemDetails(int itemID) {
+        if (items.containsKey(itemID)) {
+            System.out.println("Item Details: " + items.get(itemID));
+        } else {
+            System.out.println("Item with ID " + itemID + " does not exist.");
+        }
+    }
+
+    public void displayCatalog() {
+        System.out.println("Catalog:");
+        for (T item : items.values()) {
+            System.out.println(item);
+        }
+    }
+}
+
+// Main class
+public class GenericLibraryCatalog {
+    public static void main(String[] args) {
+        Catalog<LibraryItem<?>> catalog = new Catalog<>();
+
+        // Adding library items
+        LibraryItem<Book> book1 = new LibraryItem<>("Java Book", "Alex Stevens", 1);
+        LibraryItem<DVD> dvd1 = new LibraryItem<>("Best Movie", "Tom Robinson", 2);
+        LibraryItem<Magazine> magazine1 = new LibraryItem<>("Vogue Magazine", "Vogue", 3);
+
+        catalog.addItem(book1.getItemID(), book1);
+        catalog.addItem(dvd1.getItemID(), dvd1);
+        catalog.addItem(magazine1.getItemID(), magazine1);
+
+        // Displaying catalog
+        catalog.displayCatalog();
+
+        // Removing an item
+        catalog.removeItem(2);
+
+        // Removing a non-existent item
+        catalog.removeItem(999);
+
+        // Displaying catalog after removal
+        catalog.displayCatalog();
+    }
+}
+
+// Example subclasses showing different types of library items
+class Book extends LibraryItem<Book> {
+    public Book(String title, String author, int itemID) {
+        super(title, author, itemID);
+    }
+}
+
+class DVD extends LibraryItem<DVD> {
+    public DVD(String title, String author, int itemID) {
+        super(title, author, itemID);
+    }
+}
+
+class Magazine extends LibraryItem<Magazine> {
+    public Magazine(String title, String author, int itemID) {
+        super(title, author, itemID);
+    }
+}
